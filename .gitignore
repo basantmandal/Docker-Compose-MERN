@@ -1,7 +1,9 @@
 # Node modules
-node_modules/
 npm-debug.log*
-yarn-error.log
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Environment variables
 .env
@@ -38,17 +40,25 @@ var/www/frontend/node_modules/*
 !var/www/frontend/node_modules/.gitkeep
 var/www/backend/node_modules/*
 !var/www/backend/node_modules/.gitkeep
+var/www/api/node_modules/*
+!var/www/api/node_modules/.gitkeep
 
 
 # Compiled files
-dist/
+dist/*
+!dist/.gitkeep
 build/
 
 # Editor directories and files
-.vscode/
-.idea/
-*.swp
-*.swo
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # System files
 .DS_Store
