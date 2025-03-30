@@ -1,0 +1,54 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: "${CONTAINER_HOSTNAME}-Mongo"
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME_ROOT}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD_ROOT}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./etc/mongod.conf:/etc/mongod.conf
+      - ./var/lib/mongodb/data/db:/data/db
+      - ./var/logs/mongodb:/var/logs/mongodb
+  api:
+    image: node:18
+    container_name: "${CONTAINER_HOSTNAME}-API"
+    working_dir: /usr/src/app
+    volumes:
+      - ./var/www/api:/usr/src/app:rw
+    restart: always
+    ports:
+      - "${NODE_PORT}:3001"
+    depends_on:
+      - mongo
+    # command: bash -c "npm install && npm install -g nodemon && nodemon --legacy-watch dist/server.js"
+    command: bash -c "npm install && npm run dev"
+  frontend:
+    image: node:18
+    container_name: "${CONTAINER_HOSTNAME}-Frontend"
+    working_dir: /usr/src/app
+    volumes:
+      - ./var/www/frontend:/usr/src/app:rw
+      - /usr/src/app/node_modules  # Prevents overwriting local node_modules
+    ports:
+      - "3002:3002"
+    depends_on:
+      - api
+    command: bash -c "npm install && npm run dev -- --host"
+  backend:
+    image: node:18
+    container_name: "${CONTAINER_HOSTNAME}-Backend"
+    working_dir: /usr/src/app
+    volumes:
+      - ./var/www/backend:/usr/src/app:rw
+      - /usr/src/app/node_modules  # Prevents overwriting local node_modules
+    ports:
+      - "3003:3003"
+    depends_on:
+      - api
+    command: bash -c "npm install && npm run dev -- --host"
+networks:
+  default:
+    driver: bridge
