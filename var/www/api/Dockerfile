@@ -19,3 +19,4 @@ EXPOSE $PORT
 
 # Serve the app
 CMD ["npm", "start"] 
+# CMD ["npm", "run", "dev"]
