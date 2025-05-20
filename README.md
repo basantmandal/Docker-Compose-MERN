@@ -1,6 +1,6 @@
 # Docker Compose MERN Stack
 
-This project sets up a **MongoDB database**, a **Node.js API** server, a **Vite-powered React backend**, and a **Vite-powered React frontend** in a Dockerized environment.
+This project sets up a **MongoDB database**, a **Node.js API** server, a  **Vite Powered React** - Backend Admin Panel & Frontend in a Dockerized environment.
 
 🐞 Warning: This quick setup is only intended for test/development environments.
 
@@ -8,14 +8,14 @@ This project sets up a **MongoDB database**, a **Node.js API** server, a **Vite-
 
 ### 1️⃣ Prerequisites
 
-Ensure you have the following installed:
+**Ensure you have the following installed:**
 
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
 
 ### 2️⃣ Installation
 
-1. **Clone the repository:**
+**Clone the repository:**
 
    ```bash
    git clone https://github.com/basantmandal/Docker-Compose-MERN.git
@@ -24,7 +24,7 @@ Ensure you have the following installed:
 
 ### 3️⃣ Configure Environment Variable
 
-1. **Create environment variable files:**
+**Create environment variable files:**
 
    Create a `.env` file in the root directory and define the necessary environment variables. For example:
 
@@ -39,7 +39,7 @@ Adjust the variables as needed for your setup.
 
 ### 4️⃣ Start the Containers
 
-1. **Build and start the containers:**
+**Build and start the containers:**
 
    ```bash
    docker-compose up --build
@@ -49,7 +49,7 @@ This command will build the Docker images and start all services.
 
 ### 5️⃣ Stopping the Containers
 
-To stop all services, run:
+**To stop all services, run:**
 
 ```sh
 docker-compose down
@@ -60,9 +60,13 @@ docker-compose down
 ## 🧪 Development Workflow
 
 * **MongoDB**: Accessible at `mongodb://admin:secret@localhost:27017/mydatabase`
+
 * **MongoDB Compass**: Accessible at `mongodb://admin:secret@localhost:27017/mydatabase`
+
 * **API Server**: Accessible at `http://localhost:3001`
+
 * **Frontend**: Accessible at `http://localhost:3002`
+
 * **Backend Admin Panel**: Accessible at `http://localhost:3003`
 
 > You can use tools like [MongoDB Compass](https://www.mongodb.com/products/compass) to connect to the MongoDB instance for database management.
