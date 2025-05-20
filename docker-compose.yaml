@@ -1,6 +1,8 @@
+version: "3.8"
+
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7.0
     container_name: "${CONTAINER_HOSTNAME}-Mongo"
     restart: always
     environment:
@@ -9,11 +11,31 @@ services:
     ports:
       - "27017:27017"
     volumes:
+      - mongo-data:/data/db
       - ./etc/mongod.conf:/etc/mongod.conf
-      - ./var/lib/mongodb/data/db:/data/db
       - ./var/logs/mongodb:/var/logs/mongodb
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:7.2
+    container_name: "${CONTAINER_HOSTNAME}-Redis"
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   api:
-    image: node:18
+    image: node:18.20.2
     container_name: "${CONTAINER_HOSTNAME}-API"
     working_dir: /usr/src/app
     volumes:
@@ -21,34 +43,48 @@ services:
     restart: always
     ports:
       - "${NODE_PORT}:3001"
+    environment:
+      - NODE_ENV=development
     depends_on:
-      - mongo
-    # command: bash -c "npm install && npm install -g nodemon && nodemon --legacy-watch dist/server.js"
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: bash -c "npm install && npm run dev"
+
   frontend:
-    image: node:18
+    image: node:18.20.2
     container_name: "${CONTAINER_HOSTNAME}-Frontend"
     working_dir: /usr/src/app
     volumes:
       - ./var/www/frontend:/usr/src/app:rw
-      - /usr/src/app/node_modules  # Prevents overwriting local node_modules
     ports:
-      - "3002:3002"
+      - "${FRONTEND_PORT}:3002"
+    environment:
+      - NODE_ENV=development
     depends_on:
       - api
     command: bash -c "npm install && npm run dev -- --host"
+
   backend:
-    image: node:18
+    image: node:18.20.2
     container_name: "${CONTAINER_HOSTNAME}-Backend"
     working_dir: /usr/src/app
     volumes:
       - ./var/www/backend:/usr/src/app:rw
-      - /usr/src/app/node_modules  # Prevents overwriting local node_modules
     ports:
-      - "3003:3003"
+      - "${BACKEND_PORT}:3003"
+    environment:
+      - NODE_ENV=development
     depends_on:
       - api
     command: bash -c "npm install && npm run dev -- --host"
+
+volumes:
+  mongo-data:
+  redis-data:
+
 networks:
   default:
+    name: ${CONTAINER_HOSTNAME}-network
     driver: bridge
