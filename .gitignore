@@ -1,14 +1,5 @@
-# Node modules
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 # Environment variables
 .env
-.env.local
-.env.*.local
 
 # Logs
 npm-debug.log*
@@ -16,31 +7,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Docker files
-docker-compose.override.yml
-docker-compose.dev.yml
-docker-compose.prod.yml
-docker-compose.test.yml
-docker-compose.yaml.bak
-.dockerignore
-
-# MongoDB data (except .gitkeep)
-var/lib/mongodb/data/db/*
-!var/lib/mongodb/data/db/.gitkeep
-
 # Ignore all MongoDB logs except .gitkeep
 var/logs/mongodb/*
-!var/logs/mongodb/.gitkeep
+!var/logs/mongodb/mongod.log
 
 
-# Ignore Node Modules except .gitkeep
-var/www/frontend/node_modules/*
-!var/www/frontend/node_modules/.gitkeep
-var/www/backend/node_modules/*
-!var/www/backend/node_modules/.gitkeep
-var/www/api/node_modules/*
-!var/www/api/node_modules/.gitkeep
-
+# Ignore Node Modules
+node_modules
 
 # Compiled files
 dist/*
@@ -65,3 +38,5 @@ Thumbs.db
 # Miscellaneous
 *.bak
 *.tmp
+*.zip
+*.tar
